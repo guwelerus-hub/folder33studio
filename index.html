@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOLDER33 STUDIO | Cyfrowy Kolektyw</title>
-    <meta name="description" content="Oficjalna strona Folder33 Studio. Rap Storytelling, Dark Trap, Healing Audio. Wytwórnia przyszłości.">
+    <title>FOLDER33 STUDIO | BOOM</title>
+    <meta name="description" content="Folder33 Studio. Independent Music Label. Rap, Trap, Lo-Fi.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* --- KONFIGURACJA KOLORÓW I ZMIENNYCH --- */
+        /* --- ZMIENNE KOLORYSTYCZNE --- */
         :root {
-            --bg-color: #0A0A0A;         /* Głęboka Czerń */
-            --card-bg: #121212;          /* Trochę jaśniejsza czerń */
-            --neon-green: #39FF14;       /* Toksyczna Zieleń */
-            --neon-purple: #8A2BE2;      /* Elektryczny Indygo */
-            --text-main: #E0E0E0;        /* Złamana biel */
-            --font-header: 'Orbitron', sans-serif;
-            --font-code: 'Roboto Mono', monospace;
+            --bg-black: #0A0A0A;
+            --bg-panel: #121212;
+            --neon-green: #39FF14;
+            --neon-purple: #8A2BE2;
+            --text-white: #FFFFFF;
+            --text-gray: #B0B0B0;
         }
 
         /* --- RESET I BAZA --- */
@@ -30,78 +29,74 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: var(--font-code);
-            line-height: 1.6;
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        a { text-decoration: none; transition: 0.3s; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
-        /* --- TYPOGRAFIA I EFEKTY --- */
+        /* --- TYPOGRAFIA --- */
         h1, h2, h3 {
-            font-family: var(--font-header);
+            font-family: 'Orbitron', sans-serif;
             text-transform: uppercase;
-        }
-
-        .green-text { color: var(--neon-green); }
-        .purple-text { color: var(--neon-purple); }
-
-        /* Neon Glow Effect */
-        .glow-green { text-shadow: 0 0 10px rgba(57, 255, 20, 0.7); }
-        .glow-purple { text-shadow: 0 0 10px rgba(138, 43, 226, 0.7); }
-
-        /* Przycisk Główny */
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            font-family: var(--font-header);
-            font-weight: 700;
             letter-spacing: 2px;
-            background: transparent;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
         }
 
-        .btn:hover {
-            background: var(--neon-green);
-            color: var(--bg-color);
-            box-shadow: 0 0 20px var(--neon-green);
+        /* --- EFEKTY SPECJALNE --- */
+        .glow-text-green {
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
+        }
+        
+        .glow-border {
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
         }
 
-        /* --- HEADER --- */
-        header {
+        /* Animacja GLITCH dla hasła BOOM */
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* --- NAWIGACJA --- */
+        nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 5%;
-            background: rgba(10, 10, 10, 0.9);
             position: fixed;
             width: 100%;
-            z-index: 100;
-            border-bottom: 1px solid #222;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(57, 255, 20, 0.1);
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: -1px;
+            font-size: 1.5rem;
+            color: var(--text-white);
         }
 
-        .socials a {
-            color: var(--text-main);
-            margin-left: 20px;
+        .logo span { color: var(--neon-green); }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
             font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-gray);
         }
-        .socials a:hover { color: var(--neon-purple); }
+        .nav-links a:hover { color: var(--neon-green); }
 
-        /* --- HERO SECTION (GŁÓWNA) --- */
+        /* --- HERO SECTION (BANNER) --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -109,47 +104,65 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, var(--bg-color) 70%);
-            padding: 0 20px;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.15) 0%, var(--bg-black) 70%);
+            position: relative;
         }
 
         .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 10px;
+            font-size: 5rem;
             line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .green { color: var(--neon-green); }
+        .hero h1 .purple { color: var(--neon-purple); }
+        
+        .boom-effect {
+            display: inline-block;
+            animation: glitch 0.3s infinite paused;
+            color: var(--text-white);
+        }
+        .hero:hover .boom-effect {
+            animation-play-state: running;
+            color: var(--neon-green);
         }
 
         .hero p {
             font-size: 1.2rem;
-            max-width: 600px;
+            color: var(--text-gray);
             margin-bottom: 40px;
-            color: #aaa;
+            max-width: 600px;
         }
 
-        .tagline {
-            font-size: 1.5rem;
-            margin-top: 20px;
-            font-weight: bold;
-            letter-spacing: 5px;
-            animation: pulse 2s infinite;
+        .btn {
+            padding: 15px 40px;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
         }
 
-        /* Animacja Pulsu */
-        @keyframes pulse {
-            0% { opacity: 0.5; text-shadow: 0 0 5px var(--neon-purple); }
-            50% { opacity: 1; text-shadow: 0 0 20px var(--neon-purple), 0 0 40px var(--neon-purple); }
-            100% { opacity: 0.5; text-shadow: 0 0 5px var(--neon-purple); }
+        .btn:hover {
+            background: var(--neon-green);
+            color: var(--bg-black);
+            box-shadow: 0 0 20px var(--neon-green);
         }
 
-        /* --- ROSTER (Artyści) --- */
+        /* --- SEKCJA ARTYSTÓW (ROSTER) --- */
         .roster {
-            padding: 100px 5%;
-            background: var(--bg-color);
+            padding: 100px 10%;
+            background: var(--bg-black);
         }
 
         .section-title {
             font-size: 2.5rem;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
             border-left: 5px solid var(--neon-purple);
             padding-left: 20px;
         }
@@ -161,125 +174,220 @@
         }
 
         .card {
-            background: var(--card-bg);
+            background: var(--bg-panel);
             border: 1px solid #222;
             padding: 30px;
             transition: 0.3s;
             position: relative;
+            overflow: hidden;
         }
 
         .card:hover {
-            border-color: var(--neon-green);
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
+            transform: translateY(-10px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
         }
 
         .card h3 {
             font-size: 1.8rem;
             margin-bottom: 10px;
-            color: var(--text-main);
+            color: var(--text-white);
         }
 
-        .card span.role {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--neon-purple);
-            margin-bottom: 15px;
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border: 1px solid var(--text-gray);
+            margin-right: 5px;
             text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        .card p { font-size: 0.9rem; color: #888; }
+        .card:hover .tag {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+
+        /* --- STATYSTYKI / VIDEO --- */
+        .stats {
+            background: #0f0f0f;
+            padding: 80px 10%;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .stat-item h2 {
+            font-size: 3rem;
+            color: var(--neon-green);
+        }
+        .stat-item p {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
 
         /* --- FOOTER --- */
         footer {
-            padding: 50px 5%;
+            padding: 60px 10%;
             text-align: center;
-            border-top: 1px solid #222;
-            color: #555;
-            font-size: 0.8rem;
+            border-top: 2px solid var(--neon-green);
+            background: linear-gradient(180deg, var(--bg-black) 0%, #000 100%);
         }
 
-        footer span { color: var(--neon-green); }
+        .footer-content h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
 
-        /* --- RESPONSYWNOŚĆ --- */
+        .socials {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            color: var(--text-gray);
+            font-weight: 700;
+            border: 1px solid #333;
+            padding: 10px 20px;
+        }
+
+        .social-link:hover {
+            border-color: var(--neon-purple);
+            color: var(--neon-purple);
+            background: rgba(138, 43, 226, 0.1);
+        }
+
+        .copy {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 40px;
+        }
+
+        /* RWD - Mobile */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .grid { grid-template-columns: 1fr; }
-            header { padding: 15px 5%; }
+            .hero h1 { font-size: 3rem; }
+            .nav-links { display: none; } /* Uproszczone dla demo */
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            FOLDER<span class="green-text glow-green">33</span>
+    <nav>
+        <div class="logo">FOLDER<span>33</span></div>
+        <div class="nav-links">
+            <a href="#artists">ARTYŚCI</a>
+            <a href="#music">MUZYKA</a>
+            <a href="#contact">KONTAKT</a>
         </div>
-        <div class="socials">
-            <a href="#">YouTube</a>
-            <a href="#">Spotify</a>
-            <a href="#">Instagram</a>
-        </div>
-    </header>
+    </nav>
 
     <section class="hero">
-        <p class="green-text">WIRTUALNA WYTWÓRNIA PRZYSZŁOŚCI</p>
-        <h1>
-            <span style="display:block;">DANE.</span>
-            <span style="display:block;">EMOCJE.</span>
-            <span class="green-text glow-green">FOLDER 33.</span>
-        </h1>
-        
-        <div class="tagline purple-text">FOLDER 33 BOOM!</div>
-        
-        <p style="margin-top: 30px;">
-            Rap Storytelling & Digital Healing. 
-            Łączymy surowy, uliczny klimat z cyfrową precyzją.
-        </p>
-
-        <a href="#" class="btn">POSŁUCHAJ TERAZ</a>
+        <h1>FOLDER 33 <br><span class="boom-effect">BOOM !</span></h1>
+        <p>CYFROWY KOLEKTYW MUZYCZNY. <br> RAP / TRAP / LO-FI. NOWA FALA BRZMIENIA.</p>
+        <a href="https://youtube.com/@Folder33Studio" target="_blank" class="btn">POSŁUCHAJ TERAZ</a>
     </section>
 
-    <section class="roster">
-        <h2 class="section-title">ROSTER <span class="green-text">.V1</span></h2>
+    <div class="stats">
+        <div class="stat-item">
+            <h2>+będzie się działo...</h2>
+            <p>Wydanych Utworów</p>
+        </div>
+        <div class="stat-item">
+            <h2>6</h2>
+            <p>Unikalnych Artystów</p>
+        </div>
+        <div class="stat-item">
+            <h2>24/7</h2>
+            <p>Studio Online</p>
+        </div>
+    </div>
+
+    <section id="artists" class="roster">
+        <h2 class="section-title">NASZ SKŁAD</h2>
         
         <div class="grid">
             <div class="card">
-                <span class="role">Rap / Street / Aggressive</span>
                 <h3>KATO</h3>
-                <p>Głos ulicy. Surowe historie o zasadach, fałszywych przyjaciołach i konsekwencjach. Bez filtra.</p>
+                <div class="tags">
+                    <span class="tag">Drill</span>
+                    <span class="tag">Street</span>
+                </div>
+                <p>Surowa energia ulicy. Historie o lojalności, zdradzie i walce o swoje. Głos, który nie bierze jeńców.</p>
             </div>
 
             <div class="card">
-                <span class="role">Storytelling / Emotional</span>
+                <h3>NIKA</h3>
+                <div class="tags">
+                    <span class="tag">Pop-Rap</span>
+                    <span class="tag">Luxury</span>
+                </div>
+                <p>Nowa królowa sceny. Styl, moda i bezkompromisowe teksty o relacjach. High life w każdym wersie.</p>
+            </div>
+
+            <div class="card">
+                <h3>VIBE</h3>
+                <div class="tags">
+                    <span class="tag">Trap</span>
+                    <span class="tag">Energy</span>
+                </div>
+                <p>Czysta dopamina. Klubowe bangery i agresywny flow. Muzyka dla tych, którzy nigdy nie śpią.</p>
+            </div>
+
+            <div class="card">
+                <h3>WETERAN</h3>
+                <div class="tags">
+                    <span class="tag">90s</span>
+                    <span class="tag">Boom Bap</span>
+                </div>
+                <p>Powrót do korzeni. Klasyczne bity, życiowe mądrości i nostalgia za starymi czasami.</p>
+            </div>
+
+            <div class="card">
                 <h3>CIEŃ</h3>
-                <p>Melancholia blokowisk. Opowieści o tym, co tracimy, gdy gasną światła. Głęboki, narracyjny flow.</p>
+                <div class="tags">
+                    <span class="tag">Emo Rap</span>
+                    <span class="tag">Melodic</span>
+                </div>
+                <p>Głos pokolenia bezsenności. Emocjonalne historie o samotności w tłumie.</p>
             </div>
 
             <div class="card">
-                <span class="role">Dark Trap / Phonk</span>
-                <h3>KOMA</h3>
-                <p>Cyfrowa furia. Nowoczesne brzmienie, przesterowany bas i bezkompromisowa energia.</p>
-            </div>
-
-            <div class="card">
-                <span class="role">Melodic / Cloud</span>
-                <h3>NURT</h3>
-                <p>Płyniemy. Autotune, chmury dymu i teksty, które zostają w głowie na długo.</p>
-            </div>
-
-            <div class="card" style="border-color: var(--neon-purple);">
-                <span class="role">Healing / 432Hz</span>
-                <h3 class="purple-text">HEALING DIV.</h3>
-                <p>Dywizja instrumentalna. Częstotliwości 432Hz, Loop Therapy, Focus. Twoje cyfrowe spa.</p>
+                <h3>LUNA</h3>
+                <div class="tags">
+                    <span class="tag">Alternative</span>
+                    <span class="tag">Dark Pop</span>
+                </div>
+                <p>Mroczna strona księżyca. Hipnotyzujące, szeptane wersy i psychodeliczny klimat.</p>
             </div>
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2025 FOLDER33 STUDIO. WSZELKIE PRAWA ZASTRZEŻONE.</p>
-        <p>DESIGNED BY <span class="green-text">AI R&D DEPT</span></p>
+    <footer id="contact">
+        <div class="footer-content">
+            <h2>WSPÓŁPRACA</h2>
+            <p style="color: var(--neon-green); font-family: 'Orbitron'; letter-spacing: 1px;">FOLDER33STUDIO@GMAIL.COM</p>
+            
+            <div class="socials">
+                <a href="https://youtube.com/@Folder33Studio" class="social-link">YOUTUBE</a>
+                <a href="#" class="social-link">INSTAGRAM</a>
+                <a href="#" class="social-link">TIKTOK</a>
+                <a href="#" class="social-link">SPOTIFY</a>
+            </div>
+
+            <p class="copy">© 2025 FOLDER33 STUDIO. ALL RIGHTS RESERVED.</p>
+        </div>
     </footer>
 
 </body>
