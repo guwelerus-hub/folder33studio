@@ -2,367 +2,424 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOLDER33 | SYSTEM ACCESS</title>
-    <meta name="description" content="Folder33 Studio. Digital Music Collective.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FOLDER33 | Chrome Neuron</title>
     
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* --- KONFIGURACJA KOLORÓW I ZMIENNYCH --- */
         :root {
-            --bg-black: #050505;
-            --neon-green: #39FF14;
-            --neon-purple: #8A2BE2;
-            --text-color: #E0E0E0;
+            --toxic-green: #39FF14;
+            --electric-purple: #8A2BE2;
+            --chrome-silver: #e0e5ec;
+            --deep-black: #000000;
+            --glass-shine: rgba(255, 255, 255, 0.25);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @media (pointer: fine) {
+            * { cursor: none; }
+        }
 
         body {
-            background-color: var(--bg-black);
-            color: var(--text-color);
-            font-family: 'Orbitron', sans-serif;
-            overflow: hidden; /* Blokujemy scrollowanie - to jest jeden ekran */
-            height: 100vh;
+            background-color: var(--deep-black);
+            color: var(--chrome-silver);
+            font-family: 'Montserrat', sans-serif;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            perspective: 1200px;
         }
 
-        /* --- TŁO (CANVAS) --- */
-        #canvas-bg {
+        /* --- CUSTOM CURSOR (BIO-POINTER) --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            display: none;
+        }
+
+        @media (pointer: fine) {
+            .cursor-dot, .cursor-outline { display: block; }
+        }
+
+        .cursor-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--toxic-green);
+            box-shadow: 0 0 15px var(--toxic-green);
+        }
+
+        .cursor-outline {
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: width 0.2s, height 0.2s;
+            mix-blend-mode: difference; /* Odwraca kolory pod kursorem */
+        }
+
+        /* --- TŁO: PULSUJĄCY NEURON (LIQUID CHROME) --- */
+        .neuron-bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+            background: #050505;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            /* Mieszanie kolorów tworzy efekt "oleju" / "metalu" */
+            mix-blend-mode: hard-light; 
+            will-change: transform, opacity;
+        }
+
+        /* Toksyczna zieleń - rdzeń */
+        .blob-green {
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, var(--toxic-green) 0%, transparent 65%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: neuron-pulse 4s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.6;
+        }
+
+        /* Fiolet - synapsy */
+        .blob-purple {
+            width: 70vw;
+            height: 70vw;
+            background: radial-gradient(circle, var(--electric-purple) 0%, transparent 70%);
+            top: -20%;
+            left: -20%;
+            animation: drift 15s infinite alternate ease-in-out;
+            opacity: 0.5;
+        }
+
+        /* Srebrny/Biały - błyski (Chrome) */
+        .blob-chrome {
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, #ffffff 0%, transparent 80%);
+            bottom: -10%;
+            right: -10%;
+            animation: drift-reverse 20s infinite alternate ease-in-out;
+            mix-blend-mode: overlay;
+            opacity: 0.4;
+        }
+
+        /* Animacja "żucia" / pulsowania */
+        @keyframes neuron-pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            15% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; } /* Nagły skurcz */
+            40% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+        }
+
+        @keyframes drift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(10%, 15%) rotate(10deg); }
+        }
+
+        @keyframes drift-reverse {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-10%, -10%) scale(1.1); }
+        }
+
+        /* Siatka cyfrowa (lekko widoczna) */
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: 1;
+            mask-image: radial-gradient(circle, black 40%, transparent 100%); /* Zanika na brzegach */
+            pointer-events: none;
         }
 
-        /* --- SCANLINES (Efekt monitora) --- */
-        .scanlines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(255,255,255,0),
-                rgba(255,255,255,0) 50%,
-                rgba(0,0,0,0.2) 50%,
-                rgba(0,0,0,0.2)
-            );
-            background-size: 100% 4px;
-            z-index: 2;
-            pointer-events: none; /* Myszka przenika przez to */
-        }
-
-        /* --- GŁÓWNY KONTENER --- */
-        .container {
+        /* --- KARTA (CHROME GLASS) --- */
+        .tilt-wrapper {
             position: relative;
             z-index: 10;
+            width: 90%;
+            max-width: 600px;
+            transform-style: preserve-3d;
+        }
+
+        .chrome-card {
+            position: relative;
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            padding: 20px;
-            mix-blend-mode: lighten;
+            border-radius: 4px;
+            
+            /* Chromowana ramka (gradientowa) */
+            border: 1px solid transparent;
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.1), /* Cienka linia wew */
+                0 20px 50px rgba(0, 0, 0, 0.8);
+            
+            /* Efekt maskowania border-gradient */
+            background-clip: padding-box; 
         }
 
-        /* --- GLITCH TITLE --- */
-        .glitch-wrapper {
-            display: inline-block;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 6rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            position: relative;
-            color: var(--text-color);
-        }
-
-        h1::before, h1::after {
-            content: 'FOLDER 33';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-black);
-        }
-
-        h1::before {
-            color: var(--neon-green);
-            text-shadow: -2px 0 var(--neon-purple);
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-            transform: translate(-2px, -2px);
-            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
-        }
-
-        h1::after {
-            color: var(--neon-purple);
-            text-shadow: 2px 0 var(--neon-green);
-            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-            transform: translate(2px, 2px);
-            animation: glitch-anim-2 3s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim-1 {
-            0% { clip-path: inset(20% 0 80% 0); }
-            20% { clip-path: inset(60% 0 10% 0); }
-            40% { clip-path: inset(40% 0 50% 0); }
-            60% { clip-path: inset(80% 0 5% 0); }
-            80% { clip-path: inset(10% 0 70% 0); }
-            100% { clip-path: inset(30% 0 20% 0); }
-        }
-
-        @keyframes glitch-anim-2 {
-            0% { clip-path: inset(10% 0 60% 0); }
-            20% { clip-path: inset(80% 0 5% 0); }
-            40% { clip-path: inset(30% 0 20% 0); }
-            60% { clip-path: inset(15% 0 80% 0); }
-            80% { clip-path: inset(55% 0 10% 0); }
-            100% { clip-path: inset(40% 0 30% 0); }
-        }
-
-        .subtitle {
-            font-family: 'Share Tech Mono', monospace;
-            color: var(--neon-green);
-            font-size: 1.2rem;
-            margin-top: 10px;
-            margin-bottom: 50px;
-            letter-spacing: 3px;
-            opacity: 0.8;
-        }
-
-        /* --- PRZYCISK --- */
-        .cta-btn {
-            display: inline-block;
-            padding: 20px 50px;
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
-        }
-
-        .cta-btn::before {
+        /* Chromowana ramka pseudo-element */
+        .chrome-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.4), transparent);
-            transition: 0.5s;
+            inset: -2px; /* Wystaje poza kartę */
+            z-index: -1;
+            border-radius: 5px;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,0.8) 20%, 
+                rgba(255,255,255,0.1) 40%, 
+                var(--toxic-green) 50%, 
+                rgba(255,255,255,0.1) 60%,
+                rgba(255,255,255,0.8) 80%, 
+                rgba(255,255,255,0.1) 100%
+            );
+            mask: 
+                linear-gradient(#fff 0 0) content-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.6;
         }
 
-        .cta-btn:hover {
-            box-shadow: 0 0 30px var(--neon-green), inset 0 0 10px var(--neon-green);
-            text-shadow: 0 0 10px var(--neon-green);
-            background: rgba(57, 255, 20, 0.1);
+        /* --- TYPOGRAFIA --- */
+        .brand-subtitle {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--toxic-green);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+            font-weight: 700;
         }
 
-        .cta-btn:hover::before {
-            left: 100%;
+        h1.brand-title {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            
+            /* Efekt "Chrome Text" */
+            background: linear-gradient(to bottom, 
+                #ffffff 0%, 
+                #a0a0a0 40%, 
+                #ffffff 50%, 
+                #606060 55%, 
+                #a0a0a0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.2));
+            position: relative;
         }
 
-        /* --- KONSOLA STANU --- */
-        .status-bar {
+        /* Glitch/Scanline na tekście */
+        h1.brand-title::after {
+            content: attr(data-text);
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            font-family: 'Share Tech Mono', monospace;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: none;
+            color: rgba(255,255,255,0.1);
+            z-index: -1;
+            filter: blur(2px);
+            animation: skew-glitch 3s infinite;
+        }
+
+        @keyframes skew-glitch {
+            0%, 100% { transform: skew(0deg); opacity: 0; }
+            95% { transform: skew(0deg); opacity: 0; }
+            96% { transform: skew(10deg) translate(-2px, 0); opacity: 0.5; }
+            97% { transform: skew(-10deg) translate(2px, 0); opacity: 0.5; }
+        }
+
+        /* --- BUTTON (LIQUID FILL) --- */
+        .btn-neuron {
+            position: relative;
+            padding: 20px 45px;
+            background: transparent;
+            color: #fff;
+            font-family: 'Syncopate', sans-serif;
             font-size: 0.8rem;
-            color: #555;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .btn-neuron::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, var(--toxic-green), transparent);
+            transition: left 0.5s ease;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .btn-neuron:hover {
+            border-color: var(--toxic-green);
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.2);
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            letter-spacing: 4px;
+        }
+
+        .btn-neuron:hover::before {
+            left: 100%; /* Przejście światła */
+        }
+
+        /* --- FOOTER --- */
+        .footer-meta {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+            text-transform: uppercase;
             z-index: 20;
         }
-        
-        .blink { animation: blinker 1s linear infinite; }
-        @keyframes blinker { 50% { opacity: 0; } }
 
-        /* RWD */
-        @media (max-width: 768px) {
-            h1 { font-size: 3rem; }
-            .subtitle { font-size: 0.9rem; }
+        .status-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background-color: var(--toxic-green);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 8px var(--toxic-green);
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas-bg"></canvas>
-    <div class="scanlines"></div>
+    <!-- Kursor -->
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
 
-    <div class="container">
-        <div class="glitch-wrapper">
-            <h1>FOLDER 33</h1>
-        </div>
-        <p class="subtitle">DIGITAL MUSIC ARCHIVE // STATUS: ONLINE</p>
-        
-        <a href="https://youtube.com/@Folder33Studio" class="cta-btn">
-            ENTER THE SYSTEM
-        </a>
+    <!-- Tło: Liquid Neuron -->
+    <div class="neuron-bg">
+        <div class="blob blob-purple"></div>
+        <div class="blob blob-chrome"></div>
+        <!-- Rdzeń neuronu -->
+        <div class="blob blob-green"></div>
+        <div class="grid-overlay"></div>
     </div>
 
-    <div class="status-bar">
-        SERVER: CONNECTED<br>
-        LOCATION: ENCRYPTED<br>
-        VERSION: 2.0.5 <span class="blink">_</span>
+    <!-- Główna zawartość -->
+    <div class="tilt-wrapper" id="tiltCard">
+        <main class="chrome-card">
+            <div class="brand-subtitle">System Online</div>
+            
+            <h1 class="brand-title" data-text="FOLDER33">
+                Folder33
+            </h1>
+
+            <a href="#" class="btn-neuron" data-cursor-hover>Initialize</a>
+        </main>
     </div>
+
+    <footer class="footer-meta">
+        <span class="status-dot"></span>
+        Neural Link Established • Warsaw 2025
+    </footer>
 
     <script>
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
+        // --- LOGIKA KURSORA ---
+        const isDesktop = window.matchMedia('(pointer: fine)').matches;
 
-        let particlesArray;
+        if (isDesktop) {
+            const cursorDot = document.querySelector('[data-cursor-dot]');
+            const cursorOutline = document.querySelector('[data-cursor-outline]');
+            const hoverElements = document.querySelectorAll('[data-cursor-hover]');
 
-        // Dopasowanie do ekranu
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
-        });
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
 
-        // Interakcja myszką
-        let mouse = {
-            x: null,
-            y: null,
-            radius: (canvas.height/80) * (canvas.width/80)
-        }
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 400, fill: "forwards" });
+            });
 
-        window.addEventListener('mousemove', (event) => {
-            mouse.x = event.x;
-            mouse.y = event.y;
-        });
+            // Efekt Hover na przycisku
+            hoverElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorOutline.style.width = '60px';
+                    cursorOutline.style.height = '60px';
+                    cursorOutline.style.borderColor = 'var(--toxic-green)';
+                    cursorOutline.style.mixBlendMode = 'normal';
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorOutline.style.width = '50px';
+                    cursorOutline.style.height = '50px';
+                    cursorOutline.style.borderColor = 'rgba(255,255,255,0.4)';
+                    cursorOutline.style.mixBlendMode = 'difference';
+                });
+            });
 
-        // Klasa cząsteczki (Data Nodes)
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x;
-                this.y = y;
-                this.directionX = directionX;
-                this.directionY = directionY;
-                this.size = size;
-                this.color = color;
-            }
-
-            // Rysowanie
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = this.color;
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = this.color; // Efekt świecenia
-                ctx.fill();
-            }
-
-            // Aktualizacja pozycji
-            update() {
-                // Odbijanie od krawędzi
-                if (this.x > canvas.width || this.x < 0) {
-                    this.directionX = -this.directionX;
-                }
-                if (this.y > canvas.height || this.y < 0) {
-                    this.directionY = -this.directionY;
-                }
-
-                // Interakcja z myszką
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx*dx + dy*dy);
-
-                if (distance < mouse.radius + this.size) {
-                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
-                        this.x += 10;
-                    }
-                    if (mouse.x > this.x && this.x > this.size * 10) {
-                        this.x -= 10;
-                    }
-                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
-                        this.y += 10;
-                    }
-                    if (mouse.y > this.y && this.y > this.size * 10) {
-                        this.y -= 10;
-                    }
-                }
-
-                this.x += this.directionX;
-                this.y += this.directionY;
-                this.draw();
-            }
-        }
-
-        // Inicjalizacja
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000; // Gęstość
+            // --- 3D TILT (Delikatniejszy, bardziej "ciężki") ---
+            const card = document.getElementById('tiltCard');
             
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 2) - 1; // Prędkość
-                let directionY = (Math.random() * 2) - 1;
-                
-                // Losowanie koloru: Neon Green lub Purple
-                let color = Math.random() > 0.5 ? '#39FF14' : '#8A2BE2';
+            document.addEventListener('mousemove', (e) => {
+                const x = (window.innerWidth / 2 - e.clientX) / 45; 
+                const y = (window.innerHeight / 2 - e.clientY) / 45;
 
-                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-            }
+                card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            });
+
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            });
         }
-
-        // Pętla animacji (Łączenie kropek)
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0,0,innerWidth, innerHeight);
-
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-            }
-            connect();
-        }
-
-        // Rysowanie linii między cząsteczkami (Data Links)
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
-                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    
-                    if (distance < (canvas.width/7) * (canvas.height/7)) {
-                        opacityValue = 1 - (distance/20000);
-                        
-                        // Kolor linii zależy od cząsteczki
-                        ctx.strokeStyle = particlesArray[a].color === '#39FF14' ? 
-                            'rgba(57, 255, 20,' + opacityValue + ')' : 
-                            'rgba(138, 43, 226,' + opacityValue + ')';
-                        
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        init();
-        animate();
     </script>
 </body>
 </html>
