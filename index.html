@@ -3,392 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FOLDER33 STUDIO | BOOM</title>
-    <meta name="description" content="Folder33 Studio. Independent Music Label. Rap, Trap, Lo-Fi.">
+    <title>FOLDER33 | SYSTEM ACCESS</title>
+    <meta name="description" content="Folder33 Studio. Digital Music Collective.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
-        /* --- ZMIENNE KOLORYSTYCZNE --- */
         :root {
-            --bg-black: #0A0A0A;
-            --bg-panel: #121212;
+            --bg-black: #050505;
             --neon-green: #39FF14;
             --neon-purple: #8A2BE2;
-            --text-white: #FFFFFF;
-            --text-gray: #B0B0B0;
+            --text-color: #E0E0E0;
         }
 
-        /* --- RESET I BAZA --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-black);
-            color: var(--text-white);
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
-
-        /* --- TYPOGRAFIA --- */
-        h1, h2, h3 {
+            color: var(--text-color);
             font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        /* --- EFEKTY SPECJALNE --- */
-        .glow-text-green {
-            text-shadow: 0 0 10px rgba(57, 255, 20, 0.7);
-        }
-        
-        .glow-border {
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
-        }
-
-        /* Animacja GLITCH dla hasła BOOM */
-        @keyframes glitch {
-            0% { transform: translate(0) }
-            20% { transform: translate(-2px, 2px) }
-            40% { transform: translate(-2px, -2px) }
-            60% { transform: translate(2px, 2px) }
-            80% { transform: translate(2px, -2px) }
-            100% { transform: translate(0) }
-        }
-
-        /* --- NAWIGACJA --- */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            background: rgba(10, 10, 10, 0.95);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(57, 255, 20, 0.1);
-        }
-
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 1.5rem;
-            color: var(--text-white);
-        }
-
-        .logo span { color: var(--neon-green); }
-
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-gray);
-        }
-        .nav-links a:hover { color: var(--neon-green); }
-
-        /* --- HERO SECTION (BANNER) --- */
-        .hero {
+            overflow: hidden; /* Blokujemy scrollowanie - to jest jeden ekran */
             height: 100vh;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
+        }
+
+        /* --- TŁO (CANVAS) --- */
+        #canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- SCANLINES (Efekt monitora) --- */
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 50%,
+                rgba(0,0,0,0.2)
+            );
+            background-size: 100% 4px;
+            z-index: 2;
+            pointer-events: none; /* Myszka przenika przez to */
+        }
+
+        /* --- GŁÓWNY KONTENER --- */
+        .container {
+            position: relative;
+            z-index: 10;
             text-align: center;
-            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.15) 0%, var(--bg-black) 70%);
-            position: relative;
+            padding: 20px;
+            mix-blend-mode: lighten;
         }
 
-        .hero h1 {
-            font-size: 5rem;
-            line-height: 1.1;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 .green { color: var(--neon-green); }
-        .hero h1 .purple { color: var(--neon-purple); }
-        
-        .boom-effect {
+        /* --- GLITCH TITLE --- */
+        .glitch-wrapper {
             display: inline-block;
-            animation: glitch 0.3s infinite paused;
-            color: var(--text-white);
-        }
-        .hero:hover .boom-effect {
-            animation-play-state: running;
-            color: var(--neon-green);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-gray);
-            margin-bottom: 40px;
-            max-width: 600px;
-        }
-
-        .btn {
-            padding: 15px 40px;
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            cursor: pointer;
-            background: transparent;
             position: relative;
-            overflow: hidden;
-            transition: 0.4s;
         }
 
-        .btn:hover {
-            background: var(--neon-green);
-            color: var(--bg-black);
-            box-shadow: 0 0 20px var(--neon-green);
+        h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            position: relative;
+            color: var(--text-color);
         }
 
-        /* --- SEKCJA ARTYSTÓW (ROSTER) --- */
-        .roster {
-            padding: 100px 10%;
+        h1::before, h1::after {
+            content: 'FOLDER 33';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: var(--bg-black);
         }
 
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            border-left: 5px solid var(--neon-purple);
-            padding-left: 20px;
+        h1::before {
+            color: var(--neon-green);
+            text-shadow: -2px 0 var(--neon-purple);
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translate(-2px, -2px);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+        h1::after {
+            color: var(--neon-purple);
+            text-shadow: 2px 0 var(--neon-green);
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translate(2px, 2px);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
         }
 
-        .card {
-            background: var(--bg-panel);
-            border: 1px solid #222;
-            padding: 30px;
-            transition: 0.3s;
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 20% 0); }
+            60% { clip-path: inset(15% 0 80% 0); }
+            80% { clip-path: inset(55% 0 10% 0); }
+            100% { clip-path: inset(40% 0 30% 0); }
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--neon-green);
+            font-size: 1.2rem;
+            margin-top: 10px;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            opacity: 0.8;
+        }
+
+        /* --- PRZYCISK --- */
+        .cta-btn {
+            display: inline-block;
+            padding: 20px 50px;
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
             position: relative;
             overflow: hidden;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
         }
 
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.4), transparent);
+            transition: 0.5s;
         }
 
-        .card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-            color: var(--text-white);
+        .cta-btn:hover {
+            box-shadow: 0 0 30px var(--neon-green), inset 0 0 10px var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+            background: rgba(57, 255, 20, 0.1);
         }
 
-        .card p {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            margin-bottom: 20px;
+        .cta-btn:hover::before {
+            left: 100%;
         }
 
-        .tag {
-            display: inline-block;
-            font-size: 0.7rem;
-            padding: 5px 10px;
-            border: 1px solid var(--text-gray);
-            margin-right: 5px;
-            text-transform: uppercase;
-        }
-
-        .card:hover .tag {
-            border-color: var(--neon-green);
-            color: var(--neon-green);
-        }
-
-        /* --- STATYSTYKI / VIDEO --- */
-        .stats {
-            background: #0f0f0f;
-            padding: 80px 10%;
-            border-top: 1px solid #222;
-            border-bottom: 1px solid #222;
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            text-align: center;
-        }
-
-        .stat-item h2 {
-            font-size: 3rem;
-            color: var(--neon-green);
-        }
-        .stat-item p {
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            padding: 60px 10%;
-            text-align: center;
-            border-top: 2px solid var(--neon-green);
-            background: linear-gradient(180deg, var(--bg-black) 0%, #000 100%);
-        }
-
-        .footer-content h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .socials {
-            margin: 30px 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .social-link {
-            color: var(--text-gray);
-            font-weight: 700;
-            border: 1px solid #333;
-            padding: 10px 20px;
-        }
-
-        .social-link:hover {
-            border-color: var(--neon-purple);
-            color: var(--neon-purple);
-            background: rgba(138, 43, 226, 0.1);
-        }
-
-        .copy {
+        /* --- KONSOLA STANU --- */
+        .status-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.8rem;
             color: #555;
-            margin-top: 40px;
+            z-index: 20;
         }
+        
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
 
-        /* RWD - Mobile */
+        /* RWD */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .nav-links { display: none; } /* Uproszczone dla demo */
+            h1 { font-size: 3rem; }
+            .subtitle { font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">FOLDER<span>33</span></div>
-        <div class="nav-links">
-            <a href="#artists">ARTYŚCI</a>
-            <a href="#music">MUZYKA</a>
-            <a href="#contact">KONTAKT</a>
-        </div>
-    </nav>
+    <canvas id="canvas-bg"></canvas>
+    <div class="scanlines"></div>
 
-    <section class="hero">
-        <h1>FOLDER 33 <br><span class="boom-effect">BOOM !</span></h1>
-        <p>KOLEKTYW MUZYCZNY. <br> RAP / TRAP / LO-FI. NOWA FALA BRZMIENIA.</p>
-        <a href="https://youtube.com/@Folder33Studio" target="_blank" class="btn">POSŁUCHAJ TERAZ</a>
-    </section>
-
-    <div class="stats">
-        <div class="stat-item">
-            <h2>+będzie się działo...</h2>
-            <p>Wydanych Utworów</p>
+    <div class="container">
+        <div class="glitch-wrapper">
+            <h1>FOLDER 33</h1>
         </div>
-        <div class="stat-item">
-            <h2>+++</h2>
-            <p>Wielu</p>
-        </div>
-        <div class="stat-item">
-            <h2>24/7</h2>
-            <p>Studio Online</p>
-        </div>
+        <p class="subtitle">DIGITAL MUSIC ARCHIVE // STATUS: ONLINE</p>
+        
+        <a href="https://youtube.com/@Folder33Studio" class="cta-btn">
+            ENTER THE SYSTEM
+        </a>
     </div>
 
-    <section id="artists" class="roster">
-        <h2 class="section-title">NASZ SKŁAD</h2>
-        
-        <div class="grid">
-            <div class="card">
-                <h3>KATO</h3>
-                <div class="tags">
-                    <span class="tag">Drill</span>
-                    <span class="tag">Street</span>
-                </div>
-                <p>Surowa energia ulicy. Historie o lojalności, zdradzie i walce o swoje. Głos, który nie bierze jeńców.</p>
-            </div>
+    <div class="status-bar">
+        SERVER: CONNECTED<br>
+        LOCATION: ENCRYPTED<br>
+        VERSION: 2.0.5 <span class="blink">_</span>
+    </div>
 
-            <div class="card">
-                <h3>NIKA</h3>
-                <div class="tags">
-                    <span class="tag">Pop-Rap</span>
-                    <span class="tag">Luxury</span>
-                </div>
-                <p>Nowa królowa sceny. Styl, moda i bezkompromisowe teksty o relacjach. High life w każdym wersie.</p>
-            </div>
+    <script>
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
 
-            <div class="card">
-                <h3>VIBE</h3>
-                <div class="tags">
-                    <span class="tag">Trap</span>
-                    <span class="tag">Energy</span>
-                </div>
-                <p>Czysta dopamina. Klubowe bangery i agresywny flow. Muzyka dla tych, którzy nigdy nie śpią.</p>
-            </div>
+        let particlesArray;
 
-            <div class="card">
-                <h3>WETERAN</h3>
-                <div class="tags">
-                    <span class="tag">90s</span>
-                    <span class="tag">Boom Bap</span>
-                </div>
-                <p>Powrót do korzeni. Klasyczne bity, życiowe mądrości i nostalgia za starymi czasami.</p>
-            </div>
+        // Dopasowanie do ekranu
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            <div class="card">
-                <h3>CIEŃ</h3>
-                <div class="tags">
-                    <span class="tag">Emo Rap</span>
-                    <span class="tag">Melodic</span>
-                </div>
-                <p>Głos pokolenia bezsenności. Emocjonalne historie o samotności w tłumie.</p>
-            </div>
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
 
-            <div class="card">
-                <h3>LUNA</h3>
-                <div class="tags">
-                    <span class="tag">Alternative</span>
-                    <span class="tag">Dark Pop</span>
-                </div>
-                <p>Mroczna strona księżyca. Hipnotyzujące, szeptane wersy i psychodeliczny klimat.</p>
-            </div>
-        </div>
-    </section>
+        // Interakcja myszką
+        let mouse = {
+            x: null,
+            y: null,
+            radius: (canvas.height/80) * (canvas.width/80)
+        }
 
-    <footer id="contact">
-        <div class="footer-content">
-            <h2>WSPÓŁPRACA</h2>
-            <p style="color: var(--neon-green); font-family: 'Orbitron'; letter-spacing: 1px;">FOLDER33STUDIO@GMAIL.COM</p>
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        // Klasa cząsteczki (Data Nodes)
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+
+            // Rysowanie
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color; // Efekt świecenia
+                ctx.fill();
+            }
+
+            // Aktualizacja pozycji
+            update() {
+                // Odbijanie od krawędzi
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+
+                // Interakcja z myszką
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+
+                if (distance < mouse.radius + this.size) {
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                        this.x += 10;
+                    }
+                    if (mouse.x > this.x && this.x > this.size * 10) {
+                        this.x -= 10;
+                    }
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                        this.y += 10;
+                    }
+                    if (mouse.y > this.y && this.y > this.size * 10) {
+                        this.y -= 10;
+                    }
+                }
+
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        // Inicjalizacja
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000; // Gęstość
             
-            <div class="socials">
-                <a href="https://youtube.com/@Folder33Studio" class="social-link">YOUTUBE</a>
-                <a href="#" class="social-link">INSTAGRAM</a>
-                <a href="#" class="social-link">TIKTOK</a>
-                <a href="#" class="social-link">SPOTIFY</a>
-            </div>
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 2) - 1; // Prędkość
+                let directionY = (Math.random() * 2) - 1;
+                
+                // Losowanie koloru: Neon Green lub Purple
+                let color = Math.random() > 0.5 ? '#39FF14' : '#8A2BE2';
 
-            <p class="copy">© 2025 FOLDER33 STUDIO. ALL RIGHTS RESERVED.</p>
-        </div>
-    </footer>
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
 
+        // Pętla animacji (Łączenie kropek)
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0,0,innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+            connect();
+        }
+
+        // Rysowanie linii między cząsteczkami (Data Links)
+        function connect() {
+            let opacityValue = 1;
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+                    + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        opacityValue = 1 - (distance/20000);
+                        
+                        // Kolor linii zależy od cząsteczki
+                        ctx.strokeStyle = particlesArray[a].color === '#39FF14' ? 
+                            'rgba(57, 255, 20,' + opacityValue + ')' : 
+                            'rgba(138, 43, 226,' + opacityValue + ')';
+                        
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        init();
+        animate();
+    </script>
 </body>
 </html>
